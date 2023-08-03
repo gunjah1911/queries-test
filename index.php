@@ -1,3 +1,4 @@
+<?php include '/vendor/autoload.php';?>
 <!doctype html>
 <html lang="ru">
 <head>
@@ -19,7 +20,7 @@
 <body>
 <div class="container">
     <h2>Vertical (basic) form</h2>
-    <form id="myform" method="post" action="app/formHandler.php">
+    <form id="myform" method="post" action="app/FormHandlers.php">
         <div class="form-group">
 
                 <input type="text" class="form-control col-sm-6" id="email" placeholder="Enter name" name="name">

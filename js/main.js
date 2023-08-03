@@ -21,7 +21,7 @@ $("document").ready(function(){
 myform.onsubmit = async (e) => {
     e.preventDefault();
 
-    let response = await fetch('app/formHandler.php', {
+    let response = await fetch('app/FormHandlers.php', {
         method: 'POST',
         body: new FormData(myform)
     });
