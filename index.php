@@ -1,4 +1,12 @@
-<?php include '/vendor/autoload.php';?>
+<?php
+
+require_once __DIR__."/vendor/autoload.php";
+
+//use App\DB;
+
+$t = new App\DB\DBModel(__DIR__. "/conf/work_db_config.json");
+
+;?>
 <!doctype html>
 <html lang="ru">
 <head>
@@ -18,6 +26,7 @@
     <script src="/js/main.js"></script>
 </head>
 <body>
+<p><? var_dump($t);?></p>
 <div class="container">
     <h2>Vertical (basic) form</h2>
     <form id="myform" method="post" action="app/FormHandlers.php">
