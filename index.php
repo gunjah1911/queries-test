@@ -4,7 +4,10 @@ require_once __DIR__."/vendor/autoload.php";
 
 //use App\DB;
 
-$t = new App\DB\DBModel(__DIR__. "/conf/work_db_config.json");
+$t = new App\DB\UsersQueries(__DIR__. "/conf/user_queries_db_config.json");
+//$arUserQueries = $t->getUserQueries(1);
+$arUsers = $t->getUsers();
+//print_r($arUsers);
 
 ;?>
 <!doctype html>
@@ -30,14 +33,26 @@ $t = new App\DB\DBModel(__DIR__. "/conf/work_db_config.json");
 <div class="container">
     <h2>Vertical (basic) form</h2>
     <form id="myform" method="post" action="app/FormHandlers.php">
+        <div class="form-group col-sm-8">
+        <?//тут должен быть вывод экземпляра вида для списка пользователей
+        if (!empty($arUsers)):?>
+                <select class="custom-select col-sm-4" size="4">
+            <?foreach ($arUsers as $user):?>
+                <option value="<?=$user["id"]?>"><?=$user["name"]?></option>
+            <?endforeach?>
+                </select>
+        <?endif?>
+            <button type="button" class="btn btn-secondary btn-sm" value="add">Добавить</button>
+            <button type="button" class="btn btn-secondary btn-sm" value="edit">Редактировать</button>
+            <button type="button" class="btn btn-secondary btn-sm" value="delete">Удалить</button>
+        </div>
+
         <div class="form-group">
-
-                <input type="text" class="form-control col-sm-6" id="email" placeholder="Enter name" name="name">
-
+                <input type="text" class="form-control col-sm-4" id="email" placeholder="Enter name" name="name">
         </div>
         <div class="form-group">
 
-                <input type="text" class="form-control col-sm-6" id="pwd" placeholder="Enter text" name="text">
+                <input type="text" class="form-control col-sm-4" id="pwd" placeholder="Enter text" name="text">
         </div>
         <div class="checkbox">
             <label><input type="checkbox" name="remember"> Remember me</label>

@@ -11,6 +11,7 @@ use PDOException;
 
 class DBModel
 {
+    protected $dbHandler;
     public $tmp;
     public function __construct($db_config) //2DO: Переделать на класс
     {
@@ -20,7 +21,7 @@ class DBModel
         $this->tmp = $dsn;
 
         try {
-            return new PDO($dsn, $cfg["user"], $cfg["password"],[
+            $this->dbHandler = new PDO($dsn, $cfg["user"], $cfg["password"],[
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_EMULATE_PREPARES => false,
@@ -29,7 +30,9 @@ class DBModel
         catch (PDOException $e) {
             die("Failed to connect to database: " . $e->getMessage());
         }
-
+    }
+    function __destruct() {
+        unset($this->dbHandler);
     }
     public function runQuery()
     {
