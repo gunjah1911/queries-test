@@ -29,19 +29,25 @@ $arUsers = $t->getUsers();
     <script src="/js/main.js"></script>
 </head>
 <body>
-<p><? var_dump($t);?></p>
+<p><? //var_dump($t);?></p>
 <div class="container">
     <h2>Vertical (basic) form</h2>
     <form id="myform" method="post" action="app/FormHandlers.php">
+
         <div class="form-group col-sm-8">
         <?//тут должен быть вывод экземпляра вида для списка пользователей
         if (!empty($arUsers)):?>
-                <select class="custom-select col-sm-4" size="4">
+                <select id="user" name="user" class="custom-select col-sm-4" size="4">
             <?foreach ($arUsers as $user):?>
                 <option value="<?=$user["id"]?>"><?=$user["name"]?></option>
             <?endforeach?>
                 </select>
         <?endif?>
+
+            <select id="user_queries" name="user_queries" class="custom-select col-sm-4" size="4">>
+
+            </select>
+
             <button type="button" class="btn btn-secondary btn-sm" value="add">Добавить</button>
             <button type="button" class="btn btn-secondary btn-sm" value="edit">Редактировать</button>
             <button type="button" class="btn btn-secondary btn-sm" value="delete">Удалить</button>

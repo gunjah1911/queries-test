@@ -1,9 +1,10 @@
 $("document").ready(function(){
 
     $("#myform").submit(function(e) {
-        e.preventDefault();
+        //e.preventDefault();
 
-        let fData = $(this).serialize();
+        let fData = $(this).serialize()+'&action=get_queries';
+        console.log(fData);
 
         $.ajax({
             url: $(this).attr('action'),         /* Куда отправить запрос */
@@ -11,6 +12,26 @@ $("document").ready(function(){
             dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
             data: fData,
             success: function(data) {   /* функция которая будет выполнена после успешного запроса.  */
+                console.log(data);
+            }
+        });
+
+    });
+
+    $("#user").change(function(e) {
+        //e.preventDefault();
+
+        let fData = $("#user").serialize()+'&action=get_queries';
+        //let fData = $("#myform").serialize();
+        console.log(fData);
+
+        $.ajax({
+            url: $("#myform").attr('action'),
+            method: $("#myform").attr('method'),
+            dataType: 'json',
+            data: fData,
+            success: function(data) {
+                console.log(data);
 
             }
         });
