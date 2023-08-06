@@ -1,21 +1,24 @@
 $("document").ready(function(){
 
     $("#myform").submit(function(e) {
-        //e.preventDefault();
+        e.preventDefault();
 
+        //let fData = $(this).serializeArray();
+        //fData.push({action: 'get_queries'});
+        //let fData = [action: 'get_queries'];
         let fData = $(this).serialize()+'&action=get_queries';
         console.log(fData);
 
         $.ajax({
             url: $(this).attr('action'),         /* Куда отправить запрос */
-            method: $(this).attr('method'),             /* Метод запроса (post или get) */
+            method: $(this).attr('method'),      /* Метод запроса (post или get) */
+            //dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
             dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
             data: fData,
             success: function(data) {   /* функция которая будет выполнена после успешного запроса.  */
                 console.log(data);
             }
         });
-
     });
 
     $("#user").change(function(e) {

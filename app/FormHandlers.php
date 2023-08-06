@@ -1,17 +1,20 @@
 <?php
-use App\DB;
+require_once '../vendor/autoload.php';
+/*echo '<pre>';
 print_r($_POST);
-//$T = $_POST['action'];
-/*if ($_POST["action"] == 'get_queries'){
-    $t = new App\DB\UsersQueries(__DIR__. "/conf/user_queries_db_config.json");
-    $arUserQueries = $t->getUserQueries($_POST["user"]);
-}
+echo '</pre>';*/
 
-/*$arr = array(
-    "foo" => "bar",
-    "bar" => "foo",
-);
+/*
+$t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
+$arUserQueries = $t->getUserQueries(1);
+echo json_encode(["message" => "ok"]);
+echo '<pre>';
+print_r($arUserQueries);
+echo '</pre>';
 */
 
-//echo json_encode($arUserQueries);
-echo json_encode($_POST);
+if ($_POST["action"] === 'get_queries'){
+    $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
+    $arUserQueries = $t->getUserQueries($_POST["user"]);
+    echo json_encode($arUserQueries);
+};
