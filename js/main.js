@@ -1,6 +1,6 @@
 $("document").ready(function(){
 
-    $("#myform").submit(function(e) {
+    /*$("#myform").submit(function(e) {
         e.preventDefault();
 
         //let fData = $(this).serializeArray();
@@ -10,36 +10,48 @@ $("document").ready(function(){
         console.log(fData);
 
         $.ajax({
-            url: $(this).attr('action'),         /* Куда отправить запрос */
-            method: $(this).attr('method'),      /* Метод запроса (post или get) */
-            //dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
-            dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
+            url: $(this).attr('action'),
+            method: $(this).attr('method'),
+            //dataType: 'json',
+            dataType: 'html',
             data: fData,
-            success: function(data) {   /* функция которая будет выполнена после успешного запроса.  */
+            success: function(data) {
                 console.log(data);
             }
         });
     });
+*/
 
+    // Выбран пользователь
     $("#user").change(function(e) {
         //e.preventDefault();
 
-        let fData = $("#user").serialize()+'&action=get_queries';
-        //let fData = $("#myform").serialize();
-        console.log(fData);
+        let fData = $("#myform").serialize()+'&action=get_queries'; //сделать "относительный" селектор, который обращается к родительской форме
+        //console.log(fData);
 
         $.ajax({
             url: $("#myform").attr('action'),
             method: $("#myform").attr('method'),
-            dataType: 'json',
+            dataType: 'html',
             data: fData,
             success: function(data) {
-                console.log(data);
-
+                //console.log(data);
+                $("#user_queries").html(data);
+                $("#add").attr('disabled', false);
             }
         });
+    });
 
-    })
+    // Выбран запрос
+    $("#user_queries").change(function(e) {
+        //e.preventDefault();
+        $("#edit").attr('disabled', false);
+        $("#delete").attr('disabled', false);
+
+
+    });
+
+
 })
 /*
 myform.onsubmit = async (e) => {
