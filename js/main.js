@@ -1,15 +1,16 @@
 $("document").ready(function(){
-
-    /*$("#myform").submit(function(e) {
+    //Обработка кнопок Добавить, Изменить и Удалить
+    $("#myform").submit(function(e) {
         e.preventDefault();
 
-        //let fData = $(this).serializeArray();
-        //fData.push({action: 'get_queries'});
-        //let fData = [action: 'get_queries'];
-        let fData = $(this).serialize()+'&action=get_queries';
-        console.log(fData);
+        //let fData = $(this).serialize();//+'&action='+$("button").val();
+        //let fData = $("button").val();
+        $("button").each(function(i, item) {
+            console.log(item);
+        });
 
-        $.ajax({
+
+        /*$.ajax({
             url: $(this).attr('action'),
             method: $(this).attr('method'),
             //dataType: 'json',
@@ -18,9 +19,9 @@ $("document").ready(function(){
             success: function(data) {
                 console.log(data);
             }
-        });
+        });*/
     });
-*/
+
 
     // Выбран пользователь
     $("#user").change(function(e) {

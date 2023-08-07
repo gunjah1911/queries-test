@@ -48,9 +48,9 @@ $arUsers = $t->getUsers();
 
             </select>
 
-            <button id="add" disabled type="button" class="btn btn-secondary btn-sm" value="add">Добавить</button>
-            <button id="edit" disabled type="button" class="btn btn-secondary btn-sm" value="edit">Редактировать</button>
-            <button id="delete" disabled type="button" class="btn btn-secondary btn-sm" value="delete">Удалить</button>
+            <button id="add" disabled type="submit" class="btn btn-secondary btn-sm" formaction="app/EditHandler.php" name="action" value="add">Добавить</button>
+            <button id="edit" disabled type="submit" class="btn btn-secondary btn-sm" name="action" value="edit">Редактировать</button>
+            <button id="delete" disabled type="submit" class="btn btn-secondary btn-sm" name="action" value="delete">Удалить</button>
         </div>
 
         <div class="form-group">
