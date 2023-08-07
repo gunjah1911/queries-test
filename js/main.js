@@ -1,34 +1,13 @@
 $("document").ready(function(){
-    //Обработка кнопок Добавить, Изменить и Удалить
-    $("#myform").submit(function(e) {
-        e.preventDefault();
-
-        //let fData = $(this).serialize();//+'&action='+$("button").val();
-        //let fData = $("button").val();
-        $("button").each(function(i, item) {
-            console.log(item);
-        });
-
-
-        /*$.ajax({
-            url: $(this).attr('action'),
-            method: $(this).attr('method'),
-            //dataType: 'json',
-            dataType: 'html',
-            data: fData,
-            success: function(data) {
-                console.log(data);
-            }
-        });*/
-    });
-
+/*--------- index.php --------------------*/
 
     // Выбран пользователь
     $("#user").change(function(e) {
         //e.preventDefault();
 
         let fData = $("#myform").serialize()+'&action=get_queries'; //сделать "относительный" селектор, который обращается к родительской форме
-        //console.log(fData);
+        //let fData = $(this).parent("form").serialize()+'&action=get_queries'; //сделать "относительный" селектор, который обращается к родительской форме
+        console.log(fData);
 
         $.ajax({
             url: $("#myform").attr('action'),
@@ -48,10 +27,42 @@ $("document").ready(function(){
         //e.preventDefault();
         $("#edit").attr('disabled', false);
         $("#delete").attr('disabled', false);
-
-
     });
 
+    //Обработка кнопок Добавить, Изменить и Удалить
+    var button = null;
+
+    $("#add").click(function() {
+        button = $(this).val();
+    });
+    $("#edit").click(function() {
+        button = $(this).val();
+    });
+    $("#delete").click(function() {
+        button = $(this).val();
+    });
+
+    //Отправка формы по любой из кнопок
+    $("#myform").submit(function(e) {
+        //e.preventDefault();
+
+        let fData = $(this).serialize()+'&action='+button;
+        //let fData = $("button").val();
+            console.log(fData);
+
+        $.ajax({
+            url: '/app/EditFormHandler.php',
+            method: $(this).attr('method'),
+            //dataType: 'json',
+            dataType: 'html',
+            data: fData,
+            success: function(data) {
+                //console.log(data);
+            }
+        });
+    });
+
+    /*---------------edit.php--------------*/
 
 })
 /*
