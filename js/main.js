@@ -27,6 +27,7 @@ $("document").ready(function(){
         //e.preventDefault();
         $("#edit").attr('disabled', false);
         $("#delete").attr('disabled', false);
+
     });
 
     //Обработка кнопок Добавить, Изменить и Удалить
@@ -39,19 +40,31 @@ $("document").ready(function(){
         button = $(this).val();
     });
     $("#delete").click(function() {
-        button = $(this).val();
+        let fData = $("#myform").serialize()+'&action=delete';
+        //console.log(fData);
+        $.ajax({
+            url: $("#myform").attr('action'),
+            method: $(this).attr('method'),
+            //dataType: 'json',
+            dataType: 'html',
+            data: fData,
+            success: function(data) {
+                console.log(data);
+            }
+        });
     });
 
     //Отправка формы по любой из кнопок
     $("#myform").submit(function(e) {
-        //e.preventDefault();
+        e.preventDefault();
 
         let fData = $(this).serialize()+'&action='+button;
         //let fData = $("button").val();
             console.log(fData);
-
+            //console.log($("#myform").attr('action'));
+/*
         $.ajax({
-            url: '/app/EditFormHandler.php',
+            url: 'app/EditFormHandler.php',
             method: $(this).attr('method'),
             //dataType: 'json',
             dataType: 'html',
@@ -59,7 +72,7 @@ $("document").ready(function(){
             success: function(data) {
                 //console.log(data);
             }
-        });
+        });*/
     });
 
     /*---------------edit.php--------------*/

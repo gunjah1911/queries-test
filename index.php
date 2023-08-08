@@ -32,17 +32,17 @@ $arUsers = $t->getUsers();
             <h2>Выбор пользователя и запроса</h2>
             <form id="myform" method="post" action="app/FormHandlers.php">
 
-                  <?//тут должен быть вывод экземпляра вида для списка пользователей
+                  <?php //тут должен быть вывод экземпляра вида для списка пользователей
                 if (!empty($arUsers)):?>
                 <div class="form-group col-sm-4">
                     <label for="user">Пользователь</label>
                         <select id="user" name="user" class="form-control custom-select" size="4">
-                        <?foreach ($arUsers as $user):?>
+                        <?php foreach ($arUsers as $user):?>
                             <option value="<?=$user["id"]?>"><?=$user["name"]?></option>
-                        <?endforeach?>
+                        <?php endforeach?>
                         </select>
                 </div>
-                <?endif?>
+                <?php endif?>
                 <div class="form-group col-sm-4">
                     <label for="user_queries">Запросы пользователя</label>
                     <select id="user_queries" name="user_queries" class="form-control custom-select" size="6">
@@ -50,16 +50,16 @@ $arUsers = $t->getUsers();
                 </div>
 
                 <div class="form-group">
-                    <button id="add" disabled type="submit" class="form-group btn btn-secondary btn-sm" formaction="app/EditFormHandler.php" name="action" value="add">Добавить</button>
+                    <button id="add" disabled type="submit" class="form-group btn btn-secondary btn-sm" name="action" value="add">Добавить</button>
                     <button id="edit" disabled type="submit" class="form-group btn btn-secondary btn-sm" name="action" value="edit">Редактировать</button>
-                    <button id="delete" disabled type="submit" class="form-group btn btn-secondary btn-sm" name="action" value="delete">Удалить</button>
+                    <button id="delete" disabled type="button" class="form-group btn btn-secondary btn-sm" name="action" value="delete">Удалить</button>
                 </div>
 
             </form>
         </div>
         <div class="col">
         </div>
-    </div><?//row?>
+    </div><?php //row?>
 </div>
 
 </body>

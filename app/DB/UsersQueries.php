@@ -13,15 +13,15 @@ class UsersQueries extends DBModel
         }
         //parent::__construct($db_config);
     }
-
     public function getUserQueries($userID) {
         $res = $this->dbHandler->prepare(
         'SELECT *
                FROM queries
                JOIN users ON queries.user_id=users.id
-               WHERE users.id = :userID',
-               [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+               WHERE users.id = :userID'/*,
+               [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]*/);
         $res->execute(['userID' => $userID]);
+        //return $res->fetchAll(PDO::FETCH_ASSOC);
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
     public function getUsers() {
@@ -33,5 +33,22 @@ class UsersQueries extends DBModel
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getQueryById($queryID) {
+        $res = $this->dbHandler->prepare(
+            'SELECT *
+               FROM queries
+               WHERE id = :queryID',
+            [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        $res->execute(['queryID' => $queryID]);
+        return $res->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteQueryById($queryID){
+        $res = $this->dbHandler->prepare(
+            'DELETE FROM queries 
+            WHERE id = :queryID',
+            [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        return $res->execute(['queryID' => $queryID]);
+    }
 
 }

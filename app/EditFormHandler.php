@@ -1,6 +1,6 @@
-<?php
+<?php /*удалить
 require_once '../vendor/autoload.php';
-
+var_dump($_POST);
 if (isset($_POST)):?>
 
 <!doctype html>
@@ -22,10 +22,37 @@ if (isset($_POST)):?>
 <p><? //var_dump($t);?></p>
 <div class="container">
 
-<?
+<?php
 switch ($_POST["action"]) {
-    case 'add':
-        echo 'add';
+    case 'add':?>
+        <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-sm-8">
+            <h2>Добавление</h2>
+            <form id="edit_form" method="post" action="app/EditFormHandler.php">
+                <div class="row">
+
+                    <div class="form-group col-sm-9">
+                        <textarea id="query" class="form-control" style="min-height:10rem">
+
+                        </textarea>
+                    </div>
+                    <div class="col-sm-3">
+
+                            <button id="run" type="submit" class="form-group btn btn-secondary btn-sm" name="action" value="run">Выполнить</button>
+
+                            <button id="save" type="submit" class="form-group btn btn-secondary btn-sm" name="action" value="save">Сохранить</button>
+
+                            <button id="saveas" type="submit" class="form-group btn btn-secondary btn-sm" name="action" value="saveas">Сохранить как</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col">
+        </div>
+
+    </div><?//row
         break;
     case 'edit':
         echo 'edit';
@@ -33,13 +60,13 @@ switch ($_POST["action"]) {
     case 'delete':
         echo 'delete';
         break;
-}
-
-endif;?>
+}?>
 </div>
 </body>
 </html>
-/* TEST!!!
+<?php endif;?>
+
+<?php /* TEST!!!
 $t = new App\DB\WorkDBQuery('../conf/work_db_config.json');
 $q = 'select * from test_table';
 $test = $t->runQuery($q);
@@ -47,5 +74,5 @@ echo '<pre>';
 print_r($test);
 echo '</pre>';
 echo json_encode(["message" => "ok"]);
-*/
+*/?>
 
