@@ -17,15 +17,16 @@ $header = '
     <script src="/js/main.js"></script>
 </head>
 <body>
-<p><? //var_dump($t);?></p>
 <div class="container">';
 
 if (isset($_POST)):
+    print_r($_POST);
+
     switch ($_POST["action"]) {
         case 'get_queries':
             $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
             $arUserQueries = $t->getUserQueries($_POST["user"]);
-            echo print_r($arUserQueries); /*ВОЗВРАЩАЕТСЯ ОДИН И ТОТ ЖЕ id!!*/
+            //echo print_r($arUserQueries); 
 
             foreach ($arUserQueries as $item):?>
                 <option value="<?=$item["id"]?>"><?=$item["query_name"]?></option>
@@ -105,8 +106,10 @@ if (isset($_POST)):
         case 'delete'://удаляем по запросу
             $queryID = $_POST["user_queries"];
             $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
-            echo 'deleted';
-            if ($t->deleteQueryById($queryID)) echo 'deleted';
+            if ($t->deleteQueryById($queryID)):?>
+
+            <?php endif;
+
             break;
 }?>
 

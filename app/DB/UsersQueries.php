@@ -15,7 +15,7 @@ class UsersQueries extends DBModel
     }
     public function getUserQueries($userID) {
         $res = $this->dbHandler->prepare(
-        'SELECT *
+        'SELECT queries.id, user_id, query_name, query
                FROM queries
                JOIN users ON queries.user_id=users.id
                WHERE users.id = :userID'/*,
