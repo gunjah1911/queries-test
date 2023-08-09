@@ -1,28 +1,16 @@
 $("document").ready(function(){
     /*--------- index.php --------------------*/
 
-    $("#test").change(function() {
-        console.log('qqqq');
-        let t = $("#myform").serialize();
-        console.log(t);
-    });
+    var modal = $('#modal_deleted').modal({ keyboard: false, show: false, backdrop: 'static' });
 
     $("#test-button").click(function() {
-        //$("#modal_deleted").toggle();
-        //$(".modal").modal('show');
-        //$("#user").trigger("change");
-        //$("#user").trigger('change');
-        $("#test").change();
+        modal.modal('show');
     });
 
     // Выбран пользователь
     $("#user").change(function() {
-
-        //let fData = $("#myform").serialize()+'&action=get_queries'; //сделать "относительный" селектор, который обращается к родительской форме
-
         let fData = $(this).parents("form").serialize()+'&action=get_queries';
-        //console.log('qqqq');
-        console.log(fData);
+        //console.log(fData);
 
         $.ajax({
             url: $(this).parents("form").attr('action'),
@@ -55,22 +43,21 @@ $("document").ready(function(){
     });
 
 
-
     $("#delete").click(function() {
-        let fData = $("#myform").serialize()+'&action=delete';//$(this).parents("form").serialize()
+        let fData = $(this).parents("form").serialize()+'&action=delete';
         //console.log(fData);
 
         $.ajax({
-            url: $("#myform").attr('action'),
-            method: $("#myform").attr('method'),
+            url: $(this).parents("form").attr('action'),
+            method: $(this).parents("form").attr('method'),
             dataType: 'html',
             data: fData,
             success: function(data) {
-                $("#user").trigger('change');
-                //$(".modal").modal('show');
+                $("#user_queries").html(data);
+                modal.modal('show');
             }
+        });
 
-        });$("#user").trigger('change');
     });
 
     //Отправка формы по любой из кнопок
@@ -93,9 +80,6 @@ $("document").ready(function(){
                     }
                 });*/
     });
-
-    /*---------------edit.php--------------*/
-
 })
 /*
 myform.onsubmit = async (e) => {

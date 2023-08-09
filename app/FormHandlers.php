@@ -106,9 +106,14 @@ if (isset($_POST)):
         case 'delete'://удаляем по запросу
             $queryID = $_POST["user_queries"];
             $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
-            if ($t->deleteQueryById($queryID)):?>
+            if ($t->deleteQueryById($queryID)):
 
-            <?php endif;
+                $arUserQueries = $t->getUserQueries($_POST["user"]);
+                foreach ($arUserQueries as $item):?>
+                <option value="<?=$item["id"]?>"><?=$item["query_name"]?></option>
+                <?php endforeach;
+
+            endif;
 
             break;
 }?>
