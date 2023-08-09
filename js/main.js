@@ -42,7 +42,6 @@ $("document").ready(function(){
         button = $(this).val();
     });
 
-
     $("#delete").click(function() {
         let fData = $(this).parents("form").serialize()+'&action=delete';
         //console.log(fData);
@@ -60,26 +59,38 @@ $("document").ready(function(){
 
     });
 
-    //Отправка формы по любой из кнопок
-    $("#myform").submit(function(e) {
-        //e.preventDefault();
-
-        let fData = $(this).serialize()+'&action='+button;
-        //let fData = $("button").val();
-        //console.log(fData);
-        //console.log($("#myform").attr('action'));
-        /*
-                $.ajax({
-                    url: 'app/EditFormHandler.php',
-                    method: $(this).attr('method'),
-                    //dataType: 'json',
-                    dataType: 'html',
-                    data: fData,
-                    success: function(data) {
-                        //console.log(data);
-                    }
-                });*/
+    //Кнопка Запустить
+    $("#run").click(function(e) {
+        button = $(this).val();
     });
+
+    //Отправка формы по любой из кнопок
+    $("form").submit(function(e) {
+        //e.preventDefault();
+        let fData = $(this).serialize()+'&action='+button;
+        console.log(fData);
+    });
+
+
+    $("#run").click(function(e) {
+        //let fData = $(this).parents("form").serialize()+'&action=run';
+        let fData = $("#edit_form").serialize()+'&action=run';
+        //e.preventDefault();
+        console.log(fData);
+
+        $.ajax({
+            url: '/app/FormHandlers.php',
+            method: $(this).parents("form").attr('method'),
+            dataType: 'html',
+            data: fData,
+            success: function(data) {
+                console.log(data);
+                $(".container").html(data);
+            }
+        });
+
+    });
+
 })
 /*
 myform.onsubmit = async (e) => {

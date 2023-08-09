@@ -1,5 +1,6 @@
 <?php
 require_once '../vendor/autoload.php';
+echo '<pre>'.print_r($_POST).'</pre>';
 $header = '
 <!doctype html>
 <html lang="ru">
@@ -13,16 +14,21 @@ $header = '
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Bootstrap Bundle JS (Cloudflare CDN) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-igl8WEUuas9k5dtnhKqyyld6TzzRjvMqLC79jkgT3z02FvJyHAuUtyemm/P/jYSne1xwFI06ezQxEwweaiV7VA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script src="/js/main.js"></script>
 </head>
 <body>
-<div class="container">';
+<div class="container">
+';
+$footer = '
+        </div>
+    </body>
+    </html>';
 
 if (isset($_POST)):
     print_r($_POST);
 
     switch ($_POST["action"]) {
+
         case 'get_queries':
             $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
             $arUserQueries = $t->getUserQueries($_POST["user"]);
@@ -31,6 +37,8 @@ if (isset($_POST)):
             foreach ($arUserQueries as $item):?>
                 <option value="<?=$item["id"]?>"><?=$item["query_name"]?></option>
             <?php endforeach;
+            break;
+
         case 'add':
             $user_id = $_POST["user"];
             echo $header;?>
@@ -38,18 +46,17 @@ if (isset($_POST)):
                 <div class="col">
                 </div>
                 <div class="col-sm-8">
-                    <h2>Добавление<?=$user_id?></h2>
-                    <form id="edit_form" method="post" action="app/EditFormHandler.php">
+                    <h2>Добавление запроса</h2>
+                    <form id="edit_form" method="post" action="EditFormHandler.php">
                         <div class="row">
-
                             <div class="form-group col-sm-9">
-                                <textarea id="query" class="form-control" style="min-height:10rem">
+                                <textarea id="query" name="query" class="form-control" style="min-height:10rem">
 
                                 </textarea>
                             </div>
                             <div class="col-sm-3">
 
-                                <button id="run" type="submit" class="form-group btn btn-secondary btn-sm" name="action" value="run">Выполнить</button>
+                                <button id="run" type="button" class="form-group btn btn-secondary btn-sm" name="action" value="run">Выполнить</button>
 
                                 <button id="saveas" type="submit" class="form-group btn btn-secondary btn-sm" name="action" value="saveas">Сохранить как</button>
                             </div>
@@ -63,9 +70,10 @@ if (isset($_POST)):
     </body>
     </html><?php
             break;
+
         case 'edit':
             $queryID = $_POST["user_queries"];
-            echo $header;
+
             $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
             $arQuery = $t->getQueryById($queryID);
             /*if (!empty($arUserQueries)){
@@ -73,17 +81,18 @@ if (isset($_POST)):
                 $key = array_search($user_queries, $arUserQueries);
                 var_dump($arUserQueries["$key"]);
             }*/
-            //var_dump( $arQuery);?>
+            //var_dump( $arQuery);
+            echo $header;?>
             <div class="row">
                 <div class="col">
                 </div>
                 <div class="col-sm-8">
                     <h2>Изменение запроса</h2>
-                    <form id="edit_form" method="post" action="app/EditFormHandler.php">
+                    <form id="edit_form" method="post" action="EditFormHandler.php">
                         <div class="row">
 
                             <div class="form-group col-sm-9">
-                                <textarea id="query" class="form-control" style="min-height:10rem"><?=trim($arQuery[0]["query"]);?></textarea>
+                                <textarea id="query" name="query" class="form-control" style="min-height:10rem"><?=trim($arQuery[0]["query"]);?></textarea>
                             </div>
                             <div class="col-sm-3">
 
@@ -113,6 +122,41 @@ if (isset($_POST)):
                 <option value="<?=$item["id"]?>"><?=$item["query_name"]?></option>
                 <?php endforeach;
 
+            endif;
+            break;
+
+        case 'run': //Запускаем запрос
+            $query = $_POST["query"];
+            $t = new App\DB\WorkDBQuery('../conf/work_db_config.json');
+            $arResult = $t->runQuery($query);
+            if (!empty($arResult)):
+                echo $header;
+                //echo '<pre>'.print_r($arResult).'</pre>';?>
+                <div class="row">
+                    <table class="table">
+                        <thead class="thead-light">
+                        <tr>
+                        <?php foreach ($arResult[0] as $key => $value):?>
+                            <th scope="col"><?=$key?></th>
+                        <?php endforeach;?>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($arResult as $item_key => $item):?>
+                            <tr>
+                                <?//echo '<pre>'.print_r($item).'</pre>';?>
+                                <?php foreach ($item as $key=> $value):?>
+                                    <td><?=$value?></td>
+                                <?php endforeach;?>
+                            </tr>
+                            <?php endforeach;?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php echo $footer;
+            else:
+                echo $header;
+                echo '<p>no!</p>';
             endif;
 
             break;
