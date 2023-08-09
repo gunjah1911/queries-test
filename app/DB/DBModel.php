@@ -5,9 +5,6 @@ namespace App\DB;
 use PDO;
 use PDOException;
 
-/*2DO
-Сделать абстрактный класс для подключения к разным БД с разными конфигами
-*/
 
 class DBModel
 {
@@ -39,7 +36,13 @@ class DBModel
         $res = $this->dbHandler->prepare(
             $query,
             [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
-        $res->execute();
-        return $res->fetchAll(PDO::FETCH_ASSOC);
+        try
+        {
+            $res->execute();
+            return $res->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch (PDOException $e) {
+            die("Ошибка выполнения запроса: " . $e->getMessage());
+        }
     }
 }

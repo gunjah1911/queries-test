@@ -19,13 +19,14 @@ $header = '
 <body>
 <div class="container">
 ';
+$form_add = '';
 $footer = '
         </div>
     </body>
     </html>';
 
 if (isset($_POST)):
-    print_r($_POST);
+    //print_r($_POST);
 
     switch ($_POST["action"]) {
 
@@ -50,8 +51,11 @@ if (isset($_POST)):
                     <form id="edit_form" method="post" action="EditFormHandler.php">
                         <div class="row">
                             <div class="form-group col-sm-9">
+                                <label for="query_name">Название запроса</label>
+                                <input type="input" name="query_name" class="form-control" id="query_name" aria-describedby="emailHelp" placeholder="" required>
+                            </div>
+                            <div class="form-group col-sm-9">
                                 <textarea id="query" name="query" class="form-control" style="min-height:10rem">
-
                                 </textarea>
                             </div>
                             <div class="col-sm-3">
@@ -66,6 +70,8 @@ if (isset($_POST)):
                 <div class="col">
                 </div>
             </div><?//row?>
+            <div id="run_table" class="row">
+            </div>
         </div>
     </body>
     </html><?php
@@ -90,7 +96,10 @@ if (isset($_POST)):
                     <h2>Изменение запроса</h2>
                     <form id="edit_form" method="post" action="EditFormHandler.php">
                         <div class="row">
-
+                            <div class="form-group col-sm-9">
+                                <label for="query_name">Название запроса</label>
+                                <input type="input" name="query_name" class="form-control" id="query_name" aria-describedby="emailHelp" placeholder="">
+                            </div>
                             <div class="form-group col-sm-9">
                                 <textarea id="query" name="query" class="form-control" style="min-height:10rem"><?=trim($arQuery[0]["query"]);?></textarea>
                             </div>
@@ -108,10 +117,13 @@ if (isset($_POST)):
                 <div class="col">
                 </div>
             </div><?//row?>
+            <div id="run_table" class="row">
+            </div>
         </div>
     </body>
     </html><?php
             break;
+
         case 'delete'://удаляем по запросу
             $queryID = $_POST["user_queries"];
             $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
@@ -132,6 +144,7 @@ if (isset($_POST)):
             if (!empty($arResult)):
                 echo $header;
                 //echo '<pre>'.print_r($arResult).'</pre>';?>
+
                 <div class="row">
                     <table class="table">
                         <thead class="thead-light">
@@ -158,8 +171,16 @@ if (isset($_POST)):
                 echo $header;
                 echo '<p>no!</p>';
             endif;
-
             break;
+
+        case 'saveas': //Сохраняем новый
+            //$query = $_POST["query"];
+            echo '<pre>'.print_r($_POST).'</pre>';
+            /*$t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
+            $arResult = $t->addNewQuery($user_id, $query_name, $query);
+            if (!empty($arResult)):
+                echo $header;
+            endif;*/
 }?>
 
 <?php endif;

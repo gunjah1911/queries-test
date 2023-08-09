@@ -60,9 +60,9 @@ $("document").ready(function(){
     });
 
     //Кнопка Запустить
-    $("#run").click(function(e) {
+    /*$("#run").click(function(e) {
         button = $(this).val();
-    });
+    });*/
 
     //Отправка формы по любой из кнопок
     $("form").submit(function(e) {
@@ -76,7 +76,7 @@ $("document").ready(function(){
         //let fData = $(this).parents("form").serialize()+'&action=run';
         let fData = $("#edit_form").serialize()+'&action=run';
         //e.preventDefault();
-        console.log(fData);
+        //console.log(fData);
 
         $.ajax({
             url: '/app/FormHandlers.php',
@@ -85,7 +85,7 @@ $("document").ready(function(){
             data: fData,
             success: function(data) {
                 console.log(data);
-                $(".container").html(data);
+                $("#run_table").html(data);
             }
         });
 

@@ -51,4 +51,12 @@ class UsersQueries extends DBModel
         return $res->execute(['queryID' => $queryID]);
     }
 
+    public function addNewQuery($user_id, $query_name, $query){
+        $res = $this->dbHandler->prepare(
+            'INSERT INTO queries
+            VALUES (null, :user_id, :query_name, :query)',
+            [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        return $res->execute(['user_id' => $user_id, 'query_name' => $query_name, 'query' => $query]);
+    }
+
 }
