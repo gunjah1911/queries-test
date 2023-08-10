@@ -1,6 +1,10 @@
 <?php
+/*
+ * 2DO: Переписать на ООП/MVC контроллер
+ */
 require_once '../vendor/autoload.php';
-echo '<pre>'.print_r($_POST).'</pre>';
+//echo '<pre>'.print_r($_POST).'</pre>';
+if (isset($_POST["user"])) $user_id = $_POST["user"];
 $header = '
 <!doctype html>
 <html lang="ru">
@@ -21,6 +25,25 @@ $header = '
 ';
 $form_add = '';
 $footer = '
+        </div>
+        <!-- MODAL -->
+        <div class="modal fade" id="modal_deleted" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!--<h5 class="modal-title" id="modal_deletedLabel">Сообщение</h5>-->
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Запись удалена
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">ОК</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
     </html>';
@@ -51,18 +74,18 @@ if (isset($_POST)):
                     <form id="edit_form" method="post" action="EditFormHandler.php">
                         <div class="row">
                             <div class="form-group col-sm-9">
+                                <input type="hidden" name="user" value="<?=$user_id?>">
                                 <label for="query_name">Название запроса</label>
-                                <input type="input" name="query_name" class="form-control" id="query_name" aria-describedby="emailHelp" placeholder="" required>
+                                <input type="input" name="query_name" class="form-control" id="query_name" aria-describedby="" placeholder="" required>
                             </div>
                             <div class="form-group col-sm-9">
-                                <textarea id="query" name="query" class="form-control" style="min-height:10rem">
-                                </textarea>
+                                <textarea id="query" name="query" class="form-control" style="min-height:10rem"></textarea>
                             </div>
                             <div class="col-sm-3">
 
                                 <button id="run" type="button" class="form-group btn btn-secondary btn-sm" name="action" value="run">Выполнить</button>
 
-                                <button id="saveas" type="submit" class="form-group btn btn-secondary btn-sm" name="action" value="saveas">Сохранить как</button>
+                                <button id="saveas" type="button" class="form-group btn btn-secondary btn-sm" name="action" value="saveas">Сохранить как</button>
                             </div>
                         </div>
                     </form>
@@ -72,22 +95,13 @@ if (isset($_POST)):
             </div><?//row?>
             <div id="run_table" class="row">
             </div>
-        </div>
-    </body>
-    </html><?php
+            <?php echo $footer;
             break;
 
         case 'edit':
-            $queryID = $_POST["user_queries"];
-
+            $query_id = $_POST["user_queries"];
             $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
-            $arQuery = $t->getQueryById($queryID);
-            /*if (!empty($arUserQueries)){
-                echo 'query';
-                $key = array_search($user_queries, $arUserQueries);
-                var_dump($arUserQueries["$key"]);
-            }*/
-            //var_dump( $arQuery);
+            $arQuery = $t->getQueryById($query_id);
             echo $header;?>
             <div class="row">
                 <div class="col">
@@ -96,21 +110,24 @@ if (isset($_POST)):
                     <h2>Изменение запроса</h2>
                     <form id="edit_form" method="post" action="EditFormHandler.php">
                         <div class="row">
+
                             <div class="form-group col-sm-9">
+                                <input type="hidden" name="query_id" value="<?=$query_id?>">
+                                <input type="hidden" name="user" value="<?=$user_id?>">
                                 <label for="query_name">Название запроса</label>
-                                <input type="input" name="query_name" class="form-control" id="query_name" aria-describedby="emailHelp" placeholder="">
+                                <input type="input" name="query_name" class="form-control" id="query_name" aria-describedby="" placeholder="" value="<?=trim($arQuery[0]["query_name"]);?>">
                             </div>
+
                             <div class="form-group col-sm-9">
                                 <textarea id="query" name="query" class="form-control" style="min-height:10rem"><?=trim($arQuery[0]["query"]);?></textarea>
                             </div>
+
                             <div class="col-sm-3">
-
-                                <button id="run" type="submit" class="form-group btn btn-secondary btn-sm" name="action" value="run">Выполнить</button>
-
-                                <button id="save" type="submit" class="form-group btn btn-secondary btn-sm" name="action" value="save">Сохранить</button>
-
-                                <button id="saveas" type="submit" class="form-group btn btn-secondary btn-sm" name="action" value="saveas">Сохранить как</button>
+                                <button id="run" type="button" class="form-group btn btn-secondary btn-sm" name="action" value="run">Выполнить</button>
+                                <button id="save" type="button" class="form-group btn btn-secondary btn-sm" name="action" value="save">Сохранить</button>
+                                <button id="saveas" type="button" class="form-group btn btn-secondary btn-sm" name="action" value="saveas">Сохранить как</button>
                             </div>
+
                         </div>
                     </form>
                 </div>
@@ -119,12 +136,10 @@ if (isset($_POST)):
             </div><?//row?>
             <div id="run_table" class="row">
             </div>
-        </div>
-    </body>
-    </html><?php
+            <?php echo $footer;
             break;
 
-        case 'delete'://удаляем по запросу
+        case 'delete'://удаляем по запросу, добавить модалку с сообщением
             $queryID = $_POST["user_queries"];
             $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
             if ($t->deleteQueryById($queryID)):
@@ -174,13 +189,26 @@ if (isset($_POST)):
             break;
 
         case 'saveas': //Сохраняем новый
-            //$query = $_POST["query"];
-            echo '<pre>'.print_r($_POST).'</pre>';
-            /*$t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
+            $query_name = $_POST["query_name"];
+            $query = $_POST["query"];
+            $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
             $arResult = $t->addNewQuery($user_id, $query_name, $query);
-            if (!empty($arResult)):
+            echo 'Запрос добавлен';
+            break;
+
+        case 'save': //Сохраняем существующий
+            $query_id = $_POST["query_id"];
+            $query_name = $_POST["query_name"];
+            $query = $_POST["query"];
+
+            //echo '<pre>'.print_r($_POST).'</pre>';
+            $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
+            $arResult = $t->saveQuery($query_id, $query_name, $query);
+            /*if (!empty($arResult)):
                 echo $header;
             endif;*/
+            echo 'Запрос сохранен';
+            break;
 }?>
 
 <?php endif;

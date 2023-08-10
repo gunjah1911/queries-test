@@ -84,11 +84,52 @@ $("document").ready(function(){
             dataType: 'html',
             data: fData,
             success: function(data) {
-                console.log(data);
+                //console.log(data);
                 $("#run_table").html(data);
             }
         });
 
+    });
+
+    $("#saveas").click(function(e) {
+        //let fData = $(this).parents("form").serialize()+'&action=run';
+        let fData = $("#edit_form").serialize()+'&action=saveas';
+        //e.preventDefault();
+        //console.log(fData);
+
+        $.ajax({
+            url: '/app/FormHandlers.php',
+            method: $(this).parents("form").attr('method'),
+            dataType: 'html',
+            data: fData,
+            success: function(data) {
+                //console.log(data);
+                $(this).parents("form").trigger('reset');
+                $(".modal-body").html(data);
+                modal.modal('show');
+            }
+        });
+
+    });
+
+    $("#save").click(function(e) {
+        //let fData = $(this).parents("form").serialize()+'&action=run';
+        let fData = $("#edit_form").serialize()+'&action=save';
+        //e.preventDefault();
+        //console.log(fData);
+
+        $.ajax({
+            url: '/app/FormHandlers.php',
+            method: $(this).parents("form").attr('method'),
+            dataType: 'html',
+            data: fData,
+            success: function(data) {
+                console.log(data);
+                $(this).parents("form").trigger('reset');
+                $(".modal-body").html(data);
+                modal.modal('show');
+            }
+        });
     });
 
 })

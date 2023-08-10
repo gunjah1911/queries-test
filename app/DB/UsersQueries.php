@@ -52,11 +52,22 @@ class UsersQueries extends DBModel
     }
 
     public function addNewQuery($user_id, $query_name, $query){
+        //2DO проверить, есть ли для такого пользователя запрос с таким же именем
         $res = $this->dbHandler->prepare(
             'INSERT INTO queries
             VALUES (null, :user_id, :query_name, :query)',
             [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         return $res->execute(['user_id' => $user_id, 'query_name' => $query_name, 'query' => $query]);
+    }
+
+    public function saveQuery($query_id, $query_name, $query){
+        //2DO проверить, есть ли для такого пользователя запрос с таким же именем
+        $res = $this->dbHandler->prepare(
+            'UPDATE queries
+                   SET query_name = :query_name, query = :query
+                   WHERE id = :query_id',
+            [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+        return $res->execute(['query_id' => $query_id, 'query_name' => $query_name, 'query' => $query]);
     }
 
 }
