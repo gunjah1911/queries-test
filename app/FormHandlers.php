@@ -3,7 +3,7 @@
  * 2DO: Переписать на ООП/MVC контроллер
  */
 require_once '../vendor/autoload.php';
-//echo '<pre>'.print_r($_POST).'</pre>';
+
 if (isset($_POST["user"])) $user_id = $_POST["user"];
 $header = '
 <!doctype html>
@@ -49,7 +49,6 @@ $footer = '
     </html>';
 
 if (isset($_POST)):
-    //print_r($_POST);
 
     switch ($_POST["action"]) {
 
@@ -84,8 +83,8 @@ if (isset($_POST)):
                             <div class="col-sm-3">
 
                                 <button id="run" type="button" class="form-group btn btn-secondary btn-sm" name="action" value="run">Выполнить</button>
-
                                 <button id="saveas" type="button" class="form-group btn btn-secondary btn-sm" name="action" value="saveas">Сохранить как</button>
+                                <a href="/?user=<?=$user_id?>" class="btn btn-link">Назад</a>
                             </div>
                         </div>
                     </form>
@@ -119,13 +118,14 @@ if (isset($_POST)):
                             </div>
 
                             <div class="form-group col-sm-9">
-                                <textarea id="query" name="query" class="form-control" style="min-height:10rem"><?=trim($arQuery[0]["query"]);?></textarea>
+                                <textarea id="query" name="query" class="form-control" style="min-height:11rem"><?=trim($arQuery[0]["query"]);?></textarea>
                             </div>
 
                             <div class="col-sm-3">
                                 <button id="run" type="button" class="form-group btn btn-secondary btn-sm" name="action" value="run">Выполнить</button>
                                 <button id="save" type="button" class="form-group btn btn-secondary btn-sm" name="action" value="save">Сохранить</button>
                                 <button id="saveas" type="button" class="form-group btn btn-secondary btn-sm" name="action" value="saveas">Сохранить как</button>
+                                <a href="/?user=<?=$user_id?>" class="btn btn-link">Назад</a>
                             </div>
 
                         </div>
@@ -156,11 +156,8 @@ if (isset($_POST)):
             $query = $_POST["query"];
             $t = new App\DB\WorkDBQuery('../conf/work_db_config.json');
             $arResult = $t->runQuery($query);
-            if (!empty($arResult)):
-                echo $header;
-                //echo '<pre>'.print_r($arResult).'</pre>';?>
+            if (!empty($arResult)):?>
 
-                <div class="row">
                     <table class="table">
                         <thead class="thead-light">
                         <tr>
@@ -172,7 +169,6 @@ if (isset($_POST)):
                         <tbody>
                             <?php foreach ($arResult as $item_key => $item):?>
                             <tr>
-                                <?//echo '<pre>'.print_r($item).'</pre>';?>
                                 <?php foreach ($item as $key=> $value):?>
                                     <td><?=$value?></td>
                                 <?php endforeach;?>
@@ -180,12 +176,8 @@ if (isset($_POST)):
                             <?php endforeach;?>
                         </tbody>
                     </table>
-                </div>
-                <?php echo $footer;
-            else:
-                echo $header;
-                echo '<p>no!</p>';
-            endif;
+
+            <?php endif;
             break;
 
         case 'saveas': //Сохраняем новый
@@ -201,7 +193,6 @@ if (isset($_POST)):
             $query_name = $_POST["query_name"];
             $query = $_POST["query"];
 
-            //echo '<pre>'.print_r($_POST).'</pre>';
             $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
             $arResult = $t->saveQuery($query_id, $query_name, $query);
             /*if (!empty($arResult)):
@@ -212,24 +203,3 @@ if (isset($_POST)):
 }?>
 
 <?php endif;
-
-/*
-if ($_POST["action"] === 'get_queries'){
-    $t = new App\DB\UsersQueries('../conf/user_queries_db_config.json');
-    $arUserQueries = $t->getUserQueries($_POST["user"]);
-
-    foreach ($arUserQueries as $Item):?>
-        <option value="<?=$Item["id"]?>"><?=$Item["query_name"]?></option>
-    endforeach;
-};
-*/
-
-/* TEST!!!
-$t = new App\DB\WorkDBQuery('../conf/work_db_config.json');
-$q = 'select * from test_table';
-$test = $t->runQuery($q);
-echo '<pre>';
-print_r($test);
-echo '</pre>';
-echo json_encode(["message" => "ok"]);
-*/
