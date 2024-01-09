@@ -5,8 +5,11 @@ use PDO;
 use PDOException;
 class UsersQueries extends DBModel
 {
+    const DEFAULT_CONFIG_PATH = __DIR__.'/../../conf/user_queries_db_config.json';
+
     private static $instance = null;
-    public function __construct($db_config)
+
+    public function __construct($db_config = self::DEFAULT_CONFIG_PATH)
     {
         if (self::$instance === null) {
             self::$instance = parent::__construct($db_config);

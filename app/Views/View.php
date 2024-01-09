@@ -11,8 +11,9 @@ class View
     private $template;
     private $vars;
 
-    public function __construct($vars,$header, $footer, $template)
+    public function __construct($vars, $header, $footer, $template)
     {
+        $this->vars = $vars;
         $this->header = $header;
         $this->footer = $footer;
         $this->template = $template;
@@ -20,8 +21,9 @@ class View
 
     public function Render()
     {
-        require_once ($this->$header);
-        require_once ($this->$template);
-        require_once ($this->$header);
+        $templateVars = $this->vars;
+        require_once ($this->header);
+        require_once ($this->template);
+        require_once ($this->footer);
     }
 }

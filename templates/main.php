@@ -1,21 +1,29 @@
+<?php
+/** @var array $templateVars
+ * Массив переменных представления
+ */
+
+?>
+
 <div class="row">
     <div class="col">
     </div>
     <div class="col-sm-10">
         <h2>Выбор пользователя и запроса</h2>
-        <form id="myform" method="post" action="app/FormHandlers.php">
 
-            <?php //тут должен быть вывод экземпляра вида для списка пользователей
-            if (!empty($arUsers)):?>
+        <form id="myform" method="post" action="app/FormHandlers.php"> <?//action="index.php?>
+
+            <?php
+            if (!empty($templateVars['users'])):?>
                 <div class="form-group col-sm-4">
                     <label for="user">Пользователь</label>
                     <select id="user" name="user" class="form-control custom-select" size="4">
-                        <?php foreach ($arUsers as $user):?>
+                        <?php foreach ($templateVars['users'] as $user):?>
                             <option value="<?=$user["id"]?>"><?=$user["name"]?></option>
                         <?php endforeach?>
                         <?/*php Выбор нужного пользователя по нажатии кнопки Назад
                         if (!empty($_GET["user"])) {$user_id = $_GET["user"]; echo $user_id;}?>
-                        <?php foreach ($arUsers as $user):
+                        <?php foreach ($templateVars as $user):
                             if ($user["id"] == $user_id):?>
                                 <option selected value="<?=$user["id"]?>"><?=$user["name"]?></option>
                             <?php else:?>

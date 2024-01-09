@@ -3,8 +3,8 @@
 
 namespace App\Controllers;
 
-use App\DB,
-    App\Views\InitialForm;
+use App\DB\UsersQueries,
+    App\Views\InitialFormView;
 
 class FormHandler {
     private $formHandleStrategy;
@@ -36,11 +36,10 @@ class InitialState implements IFormHandleStrategy
 
     public function doFormHandle()
     {
-        // TODO: Implement doFormHandle() method.
-        $t = new App\DB\UsersQueries(__DIR__. "/conf/user_queries_db_config.json");
-        $arVars = $t->getUsers();
-        $view = new View($arVars,'../templates/header.php', '../templates/footer.php','../templates/main.php');
-        $view->Render;
+        $model = new UsersQueries();
+        $viewVars = ['users'=>$model->getUsers()];
+        $view = new InitialFormView($viewVars,__DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php',__DIR__.'/../../templates/main.php');
+        $view->Render();
     }
 }
 
