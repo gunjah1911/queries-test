@@ -6,9 +6,6 @@ use App\DB,
     App\Controllers,
     App\Views;
 
-//echo file_get_contents(__DIR__.'/templates/header.php');
-
-
 //echo '<pre>'.print_r($_GET).'</pre>';
 
 if (isset($_POST["action"]))
@@ -18,7 +15,8 @@ if (isset($_POST["action"]))
     {
 
         case 'get_queries':
-
+            $params = ['user'=>$_POST['user']];
+            new Controllers\FormHandler (new Controllers\ShowUserQueries(), $params);
             break;
 
         case 'add':
@@ -51,9 +49,6 @@ else //initial form state
     //$t = new App\DB\UsersQueries();
     //$arUsers = $t->getUsers();
     //require_once(__DIR__ . '/templates/main.php');
-    new Controllers\FormHandler ($params,
-        new Controllers\InitialState() //strategy)
-    );
+    new Controllers\FormHandler (new Controllers\InitialState(), //strategy)
+    null);
 } ?>
-
-<?php //echo file_get_contents(__DIR__.'/templates/footer.php');?>

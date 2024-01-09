@@ -13,7 +13,7 @@ class FormHandler {
     //private $model;
     //private $view;
 
-    public function __construct($params, IFormHandleStrategy $strategy)
+    public function __construct(IFormHandleStrategy $strategy, $params)
     {
         $this->formHandleStrategy = $strategy;
         $this->params = $params;
@@ -25,16 +25,13 @@ class FormHandler {
 
 interface IFormHandleStrategy
 {
-    function doFormHandle ();
+    function doFormHandle ($params = null);
 }
 
 
 class InitialState implements IFormHandleStrategy
 {
-//$user_id, $query_name, $query
-
-
-    public function doFormHandle()
+    public function doFormHandle($params = null)
     {
         $model = new UsersQueries();
         $viewVars = ['users'=>$model->getUsers()];
@@ -43,13 +40,25 @@ class InitialState implements IFormHandleStrategy
     }
 }
 
-/*class ShowUserQueries implements IFormHandleStrategy
+class ShowUserQueries implements IFormHandleStrategy
+{
 //user_id
 //query id, query name
-{
+    public function doFormHandle($params = null)
+    {
+        $model = new UsersQueries();
+        $arUserQueries = $model->getUserQueries($params);
 
+        foreach ($arUserQueries as $item):?>
+            <option value="<?=$item["id"]?>"><?=$item["query_name"]?></option>
+        <?php endforeach;
+
+        //$viewVars = ['users'=>$model->getUsers()];
+        //$view = new InitialFormView($viewVars,__DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php',__DIR__.'/../../templates/main.php');
+        //$view->Render();
+    }
 }
-
+/*
 class ShowAddForm implements IFormHandleStrategy
 //user_id
 {

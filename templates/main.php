@@ -11,7 +11,8 @@
     <div class="col-sm-10">
         <h2>Выбор пользователя и запроса</h2>
 
-        <form id="myform" method="post" action="app/FormHandlers.php"> <?//action="index.php?>
+        <?//<form id="myform" method="post" action="app/FormHandlers.php">?>
+        <form id="myform" method="post" action="index.php">
 
             <?php
             if (!empty($templateVars['users'])):?>
