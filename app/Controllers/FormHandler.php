@@ -1,17 +1,15 @@
 <?php
-
-
+//TODO Перенести классы и интерфейс в отдельные файлы
 namespace App\Controllers;
 
-use App\DB\UsersQueries,
-    App\Views\InitialFormView;
+use App\DB\UsersQueries;
+use App\Views\View;
+    use App\Views\InitialStateView;
+    //use App\Views\UserQueriesView;
 
 class FormHandler {
     private $formHandleStrategy;
     protected $params;
-    
-    //private $model;
-    //private $view;
 
     public function __construct(IFormHandleStrategy $strategy, $params)
     {
@@ -20,9 +18,11 @@ class FormHandler {
 
         $this->formHandleStrategy->doFormHandle($this->params);
     }
-
 }
 
+/**
+ * Интерфейс для реализации паттерна Strategy.
+ */
 interface IFormHandleStrategy
 {
     function doFormHandle ($params = null);
@@ -31,31 +31,35 @@ interface IFormHandleStrategy
 
 class InitialState implements IFormHandleStrategy
 {
+    /**
+     * Начальное состояние: отображение формы и получение списка пользователей.
+     * @param array $params
+     * В данную реализацию должен передаваться ID пользователя $params['user']
+     */
     public function doFormHandle($params = null)
     {
         $model = new UsersQueries();
         $viewVars = ['users'=>$model->getUsers()];
-        $view = new InitialFormView($viewVars,__DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php',__DIR__.'/../../templates/main.php');
+        //$view = new View($viewVars,__DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php',__DIR__.'/../../templates/main.php');
+        $view = new InitialStateView($viewVars,__DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php',__DIR__.'/../../templates/main.php');
         $view->Render();
     }
 }
 
-class ShowUserQueries implements IFormHandleStrategy
+class UserQueries implements IFormHandleStrategy
 {
-//user_id
-//query id, query name
+    /**
+     * Обработка GET-параметра action=get_queries
+     * @param array $params
+     * В данную реализацию должен передаваться ID пользователя $params['user']
+     */
     public function doFormHandle($params = null)
     {
         $model = new UsersQueries();
-        $arUserQueries = $model->getUserQueries($params);
+        $viewVars = $model->getUserQueries($params['user']);
 
-        foreach ($arUserQueries as $item):?>
-            <option value="<?=$item["id"]?>"><?=$item["query_name"]?></option>
-        <?php endforeach;
-
-        //$viewVars = ['users'=>$model->getUsers()];
-        //$view = new InitialFormView($viewVars,__DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php',__DIR__.'/../../templates/main.php');
-        //$view->Render();
+        $view = new UserQueriesView($viewVars); //шаблон не используется, выводится через ajax
+        $view->Render();
     }
 }
 /*

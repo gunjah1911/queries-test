@@ -16,7 +16,8 @@ if (isset($_POST["action"]))
 
         case 'get_queries':
             $params = ['user'=>$_POST['user']];
-            new Controllers\FormHandler (new Controllers\ShowUserQueries(), $params);
+            //echo '<pre>'.print_r($_POST['user']).'</pre>';
+            new Controllers\FormHandler(new Controllers\UserQueries(), $params);
             break;
 
         case 'add':

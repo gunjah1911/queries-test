@@ -1,6 +1,6 @@
 <?php
 /*
- * 2DO: Переписать на ООП/MVC контроллер
+ * toDO: Переписать на ООП/MVC контроллер
  */
 require_once '../vendor/autoload.php';
 

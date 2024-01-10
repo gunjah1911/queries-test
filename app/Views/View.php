@@ -11,7 +11,7 @@ class View
     private $template;
     private $vars;
 
-    public function __construct($vars, $header, $footer, $template)
+    public function __construct($vars, $header = null, $footer = null, $template = null)
     {
         $this->vars = $vars;
         $this->header = $header;
@@ -25,5 +25,18 @@ class View
         require_once ($this->header);
         require_once ($this->template);
         require_once ($this->footer);
+    }
+}
+
+class UserQueriesView extends View
+//обрабатывает
+{
+    public function Render()
+    {
+        parent::Render();
+
+        foreach ($templateVars as $item) {
+            echo '<option value="'.$item["id"].'">'.$item["query_name"].'</option>';
+        }
     }
 }
