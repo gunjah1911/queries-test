@@ -34,14 +34,15 @@ if (isset($_POST["action"]))
 
         case 'edit':
             $params = [
-                'user'=>$_POST['user'],
+                //'user'=>$_POST['user'],
                 'query_id'=>$_POST['user_queries']
             ];
             new FormHandler(new App\Controllers\ShowEditForm(), $params);
             break;
 
         case 'run': //Запускаем запрос
-
+            $params = ['query'=>$_POST['query']];
+            new FormHandler(new App\Controllers\RunQuery(), $params);
             break;
 
         case 'saveas': //Сохраняем новый
