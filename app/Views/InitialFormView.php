@@ -1,16 +1,12 @@
 <?php
 
-
 namespace App\Views;
 
-
-class UserQueriesView extends View
+class InitialFormView extends View
 {
-    public function Render()
+    public function ShowUserQueries()
     {
-        parent::Render();
-        //echo '<pre>'.print_r($this->getTemplateVars()).'</pre>';
-
+        $this->Render();
         //TODO можно сделать шаблон для ответа
         $templateVars = $this->getTemplateVars();
         if (!empty($templateVars['queries'])) {
@@ -20,3 +16,4 @@ class UserQueriesView extends View
         }
     }
 }
+

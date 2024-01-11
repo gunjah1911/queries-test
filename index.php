@@ -2,9 +2,9 @@
 
 require_once __DIR__."/vendor/autoload.php";
 
-use App\DB,
-    App\Controllers,
-    App\Views;
+use App\Controllers\FormHandler;
+//TODO: Перенести классы из 1 файла FormHandler в разные
+
 ini_set('display_errors', 1);
 //echo '<pre>'.print_r($_GET).'</pre>';
 
@@ -16,19 +16,28 @@ if (isset($_POST["action"]))
 
         case 'get_queries':
             $params = ['user'=>$_POST['user']];
-            new Controllers\FormHandler(new Controllers\UserQueries(), $params);
+            new FormHandler(new App\Controllers\UserQueries(), $params);
+            break;
+
+        case 'delete':
+            $params = [
+                'user'=>$_POST['user'],
+                'query_id'=>$_POST['user_queries'],
+            ];
+            new FormHandler(new App\Controllers\DeleteQuery(), $params);
             break;
 
         case 'add':
-
+            $params = ['user'=>$_POST['user']];
+            new FormHandler(new App\Controllers\ShowAddForm(), $params);
             break;
 
         case 'edit':
-
-            break;
-
-        case 'delete'://удаляем по запросу, добавить модалку с сообщением
-
+            $params = [
+                'user'=>$_POST['user'],
+                'query_id'=>$_POST['user_queries']
+            ];
+            new FormHandler(new App\Controllers\ShowEditForm(), $params);
             break;
 
         case 'run': //Запускаем запрос
@@ -46,9 +55,5 @@ if (isset($_POST["action"]))
 }
 else //initial form state
 {
-    //$t = new App\DB\UsersQueries();
-    //$arUsers = $t->getUsers();
-    //require_once(__DIR__ . '/templates/main.php');
-    new Controllers\FormHandler (new Controllers\InitialState(), //strategy)
-    null);
+    new FormHandler (new App\Controllers\InitialState(), null);
 } ?>
