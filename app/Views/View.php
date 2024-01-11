@@ -9,34 +9,39 @@ class View
     private $header;
     private $footer;
     private $template;
-    private $vars;
+    private $templateVars;
 
-    public function __construct($vars, $header = null, $footer = null, $template = null)
+    public function __construct($vars, $template = null, $header = null, $footer = null)
     {
-        $this->vars = $vars;
+        $this->templateVars = $vars;
         $this->header = $header;
         $this->footer = $footer;
         $this->template = $template;
     }
 
-    public function Render()
+    /**
+     * @return mixed
+     */
+    public function getTemplateVars()
     {
-        $templateVars = $this->vars;
-        require_once ($this->header);
-        require_once ($this->template);
-        require_once ($this->footer);
+        return $this->templateVars;
     }
-}
 
-class UserQueriesView extends View
-//обрабатывает
-{
     public function Render()
     {
-        parent::Render();
+        $templateVars = $this->getTemplateVars();
 
-        foreach ($templateVars as $item) {
-            echo '<option value="'.$item["id"].'">'.$item["query_name"].'</option>';
+        if (!empty($this->header)) {
+            require_once ($this->header);
+        }
+        if (!empty($this->template)) {
+            require_once ($this->template);
+        }
+        if (!empty($this->footer)) {
+            require_once ($this->footer);
         }
     }
+
+
 }
+

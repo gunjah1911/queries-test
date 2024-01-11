@@ -3,12 +3,18 @@
 namespace App\Controllers;
 
 use App\DB\UsersQueries;
-use App\Views\View;
-    use App\Views\InitialStateView;
-    //use App\Views\UserQueriesView;
+use App\Views\View,
+    App\Views\InitialStateView,
+    App\Views\UserQueriesView;
 
 class FormHandler {
+    /**
+     * @var IFormHandleStrategy Интерфейс, реализующий стратегию обработки запросов из формы
+     */
     private $formHandleStrategy;
+    /**
+     * @var array Массив параметров (обычно для формирования запроса в БД)
+     */
     protected $params;
 
     public function __construct(IFormHandleStrategy $strategy, $params)
@@ -41,7 +47,7 @@ class InitialState implements IFormHandleStrategy
         $model = new UsersQueries();
         $viewVars = ['users'=>$model->getUsers()];
         //$view = new View($viewVars,__DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php',__DIR__.'/../../templates/main.php');
-        $view = new InitialStateView($viewVars,__DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php',__DIR__.'/../../templates/main.php');
+        $view = new InitialStateView($viewVars, __DIR__.'/../../templates/main.php', __DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php');
         $view->Render();
     }
 }
@@ -56,10 +62,11 @@ class UserQueries implements IFormHandleStrategy
     public function doFormHandle($params = null)
     {
         $model = new UsersQueries();
-        $viewVars = $model->getUserQueries($params['user']);
+        $viewVars = ['queries'=>$model->getUserQueries($params['user'])]; //TODO обработка пустого $params
+        //echo '<pre>'.print_r($viewVars).'</pre>';
 
-        $view = new UserQueriesView($viewVars); //шаблон не используется, выводится через ajax
-        $view->Render();
+        $view = new InitialStateView($viewVars); //шаблон не используется, выводится через ajax
+        $view->ShowUserQueries();
     }
 }
 /*

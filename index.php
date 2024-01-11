@@ -5,7 +5,7 @@ require_once __DIR__."/vendor/autoload.php";
 use App\DB,
     App\Controllers,
     App\Views;
-
+ini_set('display_errors', 1);
 //echo '<pre>'.print_r($_GET).'</pre>';
 
 if (isset($_POST["action"]))
@@ -16,7 +16,6 @@ if (isset($_POST["action"]))
 
         case 'get_queries':
             $params = ['user'=>$_POST['user']];
-            //echo '<pre>'.print_r($_POST['user']).'</pre>';
             new Controllers\FormHandler(new Controllers\UserQueries(), $params);
             break;
 

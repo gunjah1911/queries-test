@@ -2,7 +2,8 @@
 /** @var array $templateVars
  * Массив переменных представления
  */
-
+//$templateVars = $view->getTemplateVars();
+//echo '<pre>'.print_r($templateVars).'</pre>';
 ?>
 
 <div class="row">
@@ -11,7 +12,6 @@
     <div class="col-sm-10">
         <h2>Выбор пользователя и запроса</h2>
 
-        <?//<form id="myform" method="post" action="app/FormHandlers.php">?>
         <form id="myform" method="post" action="index.php">
 
             <?php
@@ -20,7 +20,7 @@
                     <label for="user">Пользователь</label>
                     <select id="user" name="user" class="form-control custom-select" size="4">
                         <?php foreach ($templateVars['users'] as $user):?>
-                            <option value="<?=$user["id"]?>"><?=$user["name"]?></option>
+                            <option value="<?=$user['id']?>"><?=$user['name']?></option>
                         <?php endforeach?>
                         <?/*php Выбор нужного пользователя по нажатии кнопки Назад
                         if (!empty($_GET["user"])) {$user_id = $_GET["user"]; echo $user_id;}?>

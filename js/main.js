@@ -16,6 +16,7 @@ $("document").ready(function(){
             dataType: 'html',
             data: fData,
             success: function(data) {
+                //console.log('asd');
                 $("#user_queries").html(data);
                 $("#add").attr('disabled', false);
             }
