@@ -46,11 +46,21 @@ if (isset($_POST["action"]))
             break;
 
         case 'saveas': //Сохраняем новый
-
+            $params = [
+                'user'=>$_POST['user'],
+                'query_name'=>$_POST['query_name'],
+                'query'=>$_POST['query']
+            ];
+            new FormHandler(new App\Controllers\SaveAsQuery(), $params);
             break;
 
         case 'save': //Сохраняем существующий
-
+            $params = [
+                'query_id'=>$_POST['query_id'],
+                'query_name'=>$_POST['query_name'],
+                'query'=>$_POST['query']
+            ];
+            new FormHandler(new App\Controllers\SaveQuery(), $params);
             break;
     }
 }

@@ -31,6 +31,7 @@ class FormHandler {
  */
 interface IFormHandleStrategy
 {
+    //TODO: добавить метод setParams, который проверяет, готовит и передает параметры для  doFormHandle
     function doFormHandle ($params = null);
 }
 
@@ -40,13 +41,13 @@ class InitialState implements IFormHandleStrategy
     /**
      * Начальное состояние: отображение формы и получение списка пользователей.
      * @param array $params
-     * В данную реализацию должен передаваться ID пользователя $params['user']
+     * В метод должен передаваться ID выбранного пользователя $params['user']
      */
     public function doFormHandle($params = null)
     {
         $model = new UsersQueries();
         $viewVars = ['users'=>$model->getUsers()];
-        //$view = new View($viewVars,__DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php',__DIR__.'/../../templates/main.php');
+
         $view = new InitialFormView($viewVars, __DIR__.'/../../templates/main.php', __DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php');
         $view->Render();
     }
@@ -57,7 +58,7 @@ class UserQueries implements IFormHandleStrategy
     /**
      * Обработка GET-параметра action=get_queries
      * @param array $params
-     * В данную реализацию должен передаваться ID пользователя $params['user']
+     * В метод должен передаваться ID выбранного пользователя $params['user']
      */
     public function doFormHandle($params = null)
     {
@@ -74,7 +75,9 @@ class DeleteQuery implements IFormHandleStrategy
     /**
      * Обработка GET-параметра action=delete
      * @param array $params
-     * В данную реализацию должен передаваться ID пользователя $params['user'] и ID запроса $params['query_id']
+     * В метод должны передаваться
+     * - ID пользователя $params['user']
+     * - ID запроса $params['query_id']
      */
     function doFormHandle($params = null)
     {
@@ -88,12 +91,11 @@ class DeleteQuery implements IFormHandleStrategy
 }
 
 class ShowAddForm implements IFormHandleStrategy
-//user_id
 {
     /**
      * Обработка GET-параметра action=add
      * @param array $params
-     * В данную реализацию должен передаваться ID выбранного пользователя $params['user']
+     * В метод должен передаваться ID выбранного пользователя $params['user']
      */
     function doFormHandle($params = null)
     {
@@ -107,7 +109,7 @@ class ShowEditForm implements IFormHandleStrategy
     /**
      * Обработка GET-параметра action=edit
      * @param array $params
-     * В данную реализацию должен передаваться ID выбранного запроса $params['query_id']
+     * В метод должен передаваться ID выбранного запроса $params['query_id']
      */
     function doFormHandle($params = null)
     {
@@ -124,28 +126,57 @@ class RunQuery implements IFormHandleStrategy
     /**
      * Обработка GET-параметра action=run
      * @param array $params
-     * В данную реализацию должен передаваться ID выбранного запроса $params['query_id']
+     * В метод должен передаваться ID выбранного запроса $params['query_id']
      */
 
     function doFormHandle($params = null)
     {
         $model = new WorkDBQuery();
-        $viewVars = $model->runQuery($params['query']);
+        $viewVars['query_result'] = $model->runQuery($params['query']);
 
-        $view = new EditFormView($viewVars[0], __DIR__.'/../../templates/edit_form.php', __DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php');
+        $view = new EditFormView($viewVars, __DIR__.'/../../templates/run_query_result.php', __DIR__.'/../../templates/header.php', __DIR__.'/../../templates/footer.php');
         $view->Render();
     }
 }
 
-/*
-class SaveQuery implements IFormHandleStrategy
-//$query_id, $query_name, $query
+class SaveAsQuery implements IFormHandleStrategy
 {
+    /**
+     * Обработка GET-параметра action=saveas
+     * @param array $params
+     * В метод должен передаваться
+     * - ID пользователя $params['user']
+     * - Наименование запроса
+     * - Тело запроса
+     */
 
+    function doFormHandle($params = null)
+    {
+        $model = new UsersQueries();
+        $model->addNewQuery($params['user'],$params['query_name'],$params['query']);
+
+        echo 'Запрос добавлен';
+    }
 }
 
-class SaveAsQuery implements IFormHandleStrategy
-//$user_id, $query_name, $query
+class SaveQuery implements IFormHandleStrategy
 {
-*/
+    /**
+     * Обработка GET-параметра action=saveas
+     * @param array $params
+     * В метод должен передаваться
+     * - ID запроса $params['user']
+     * - Наименование запроса
+     * - Тело запроса
+     */
+
+    function doFormHandle($params = null)
+    {
+        $model = new UsersQueries();
+        $model->saveQuery($params['query_id'],$params['query_name'],$params['query']);
+
+        echo 'Запрос сохранен';
+    }
+}
+
 

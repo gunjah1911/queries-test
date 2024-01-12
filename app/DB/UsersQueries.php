@@ -4,6 +4,7 @@ namespace App\DB;
 use PDO;
 use PDOException;
 class UsersQueries extends DBModel
+//TODO: сделать обработку исключений
 {
     const DEFAULT_CONFIG_PATH = __DIR__.'/../../conf/user_queries_db_config.json';
 
@@ -55,7 +56,7 @@ class UsersQueries extends DBModel
     }
 
     public function addNewQuery($user_id, $query_name, $query){
-        //2DO проверить, есть ли для такого пользователя запрос с таким же именем
+        //TODO: проверить, есть ли для такого пользователя запрос с таким же именем
         $res = $this->dbHandler->prepare(
             'INSERT INTO queries
             VALUES (null, :user_id, :query_name, :query)',
@@ -64,7 +65,7 @@ class UsersQueries extends DBModel
     }
 
     public function saveQuery($query_id, $query_name, $query){
-        //2DO проверить, есть ли для такого пользователя запрос с таким же именем
+        //TODO: проверить, есть ли для такого пользователя запрос с таким же именем
         $res = $this->dbHandler->prepare(
             'UPDATE queries
                    SET query_name = :query_name, query = :query

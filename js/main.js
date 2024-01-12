@@ -69,7 +69,7 @@ $("document").ready(function(){
         let fData = $("#edit_form").serialize()+'&action=run';
 
         $.ajax({
-            url: '/app/FormHandlers.php',
+            url: $(this).parents("form").attr('action'),//'index.php',
             method: $(this).parents("form").attr('method'),
             dataType: 'html',
             data: fData,
@@ -84,7 +84,7 @@ $("document").ready(function(){
         let fData = $("#edit_form").serialize()+'&action=saveas';
 
         $.ajax({
-            url: '/app/FormHandlers.php',
+            url: $(this).parents("form").attr('action'),
             method: $(this).parents("form").attr('method'),
             dataType: 'html',
             data: fData,
@@ -101,7 +101,7 @@ $("document").ready(function(){
         let fData = $("#edit_form").serialize()+'&action=save';
 
         $.ajax({
-            url: '/app/FormHandlers.php',
+            url: $(this).parents("form").attr('action'),
             method: $(this).parents("form").attr('method'),
             dataType: 'html',
             data: fData,
