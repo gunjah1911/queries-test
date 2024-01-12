@@ -3,9 +3,8 @@
 require_once __DIR__."/vendor/autoload.php";
 
 use App\Controllers\FormHandler;
-//TODO: Перенести классы из 1 файла FormHandler в разные
 
-ini_set('display_errors', 1);
+//ini_set('display_errors', 1);
 //echo '<pre>'.print_r($_GET).'</pre>';
 
 if (isset($_POST["action"]))
@@ -14,35 +13,35 @@ if (isset($_POST["action"]))
     switch ($_POST["action"])
     {
 
-        case 'get_queries':
+        case 'get_queries': //показываем запросы выбранного пользователя
             $params = ['user'=>$_POST['user']];
-            new FormHandler(new App\Controllers\UserQueries(), $params);
+            new FormHandler(new \App\Controllers\UserQueries(), $params);
             break;
 
-        case 'delete':
+        case 'delete': //уделение запроса
             $params = [
                 'user'=>$_POST['user'],
                 'query_id'=>$_POST['user_queries'],
             ];
-            new FormHandler(new App\Controllers\DeleteQuery(), $params);
+            new FormHandler(new \App\Controllers\DeleteQuery(), $params);
             break;
 
-        case 'add':
+        case 'add': //показываем форму добавления нового запроса
             $params = ['user'=>$_POST['user']];
-            new FormHandler(new App\Controllers\ShowAddForm(), $params);
+            new FormHandler(new \App\Controllers\ShowAddForm(), $params);
             break;
 
-        case 'edit':
+        case 'edit': //показываем форму редактирования существующего запроса
             $params = [
                 //'user'=>$_POST['user'],
                 'query_id'=>$_POST['user_queries']
             ];
-            new FormHandler(new App\Controllers\ShowEditForm(), $params);
+            new FormHandler(new \App\Controllers\ShowEditForm(), $params);
             break;
 
         case 'run': //Запускаем запрос
             $params = ['query'=>$_POST['query']];
-            new FormHandler(new App\Controllers\RunQuery(), $params);
+            new FormHandler(new \App\Controllers\RunQuery(), $params);
             break;
 
         case 'saveas': //Сохраняем новый
@@ -51,7 +50,7 @@ if (isset($_POST["action"]))
                 'query_name'=>$_POST['query_name'],
                 'query'=>$_POST['query']
             ];
-            new FormHandler(new App\Controllers\SaveAsQuery(), $params);
+            new FormHandler(new \App\Controllers\SaveAsQuery(), $params);
             break;
 
         case 'save': //Сохраняем существующий
@@ -60,11 +59,11 @@ if (isset($_POST["action"]))
                 'query_name'=>$_POST['query_name'],
                 'query'=>$_POST['query']
             ];
-            new FormHandler(new App\Controllers\SaveQuery(), $params);
+            new FormHandler(new \App\Controllers\SaveQuery(), $params);
             break;
     }
 }
 else //initial form state
 {
-    new FormHandler (new App\Controllers\InitialState(), null);
+    new FormHandler (new \App\Controllers\InitialState(), null);
 } ?>
