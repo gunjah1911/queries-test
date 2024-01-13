@@ -25,7 +25,6 @@ class UsersQueries extends DBModel
                WHERE users.id = :userID'/*,
                [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]*/);
         $res->execute(['userID' => $userID]);
-        //return $res->fetchAll(PDO::FETCH_ASSOC);
         return $res->fetchAll(PDO::FETCH_ASSOC);
     }
     public function getUsers() {
@@ -56,7 +55,7 @@ class UsersQueries extends DBModel
     }
 
     public function addNewQuery($user_id, $query_name, $query){
-        //TODO: проверить, есть ли для такого пользователя запрос с таким же именем
+        //проверка, есть ли для такого пользователя запрос с таким же именем, организована на уровне СУБД
         $res = $this->dbHandler->prepare(
             'INSERT INTO queries
             VALUES (null, :user_id, :query_name, :query)',
@@ -65,7 +64,6 @@ class UsersQueries extends DBModel
     }
 
     public function saveQuery($query_id, $query_name, $query){
-        //TODO: проверить, есть ли для такого пользователя запрос с таким же именем
         $res = $this->dbHandler->prepare(
             'UPDATE queries
                    SET query_name = :query_name, query = :query

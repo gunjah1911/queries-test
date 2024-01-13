@@ -18,8 +18,8 @@ class SaveAsQuery implements IFormHandleStrategy
     function doFormHandle($params = null)
     {
         $model = new UsersQueries();
-        $model->addNewQuery($params['user'], $params['query_name'], $params['query']);
-
-        echo 'Запрос добавлен';
+        if ($model->addNewQuery($params['user'], $params['query_name'], $params['query'])){
+            echo 'Запрос добавлен';
+        }
     }
 }

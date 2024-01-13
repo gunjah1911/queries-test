@@ -32,12 +32,12 @@ class DBModel
         unset($this->dbHandler);
     }
     public function runQuery($query){
-        //Готовим и запускаем запрос
-        $res = $this->dbHandler->prepare(
-            $query,
-            [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
         try
         {
+            $res = $this->dbHandler->prepare(
+                $query,
+                [PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY]);
+
             $res->execute();
             return $res->fetchAll(PDO::FETCH_ASSOC);
         }
