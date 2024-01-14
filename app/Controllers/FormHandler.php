@@ -18,9 +18,9 @@ class FormHandler {
     public function __construct(IFormHandleStrategy $strategy, $params)
     {
         $this->formHandleStrategy = $strategy;
-        $this->params = $params;
+        $this->formHandleStrategy->setParams($params);
 
-        $this->formHandleStrategy->doFormHandle($this->params);
+        $this->formHandleStrategy->doFormHandle();
     }
 }
 
