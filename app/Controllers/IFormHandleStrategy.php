@@ -7,7 +7,19 @@ namespace App\Controllers;
  */
 interface IFormHandleStrategy
 {
-    //TODO: добавить метод setParams, который проверяет, готовит и передает параметры для  doFormHandle
+    /**
+     * Обработка и инициализаця массива параметров, которые приходят из формы
+     * Вызывается в конструкторе класса FormHandler
+     * @param null $params
+     * @return mixed
+     *
+     */
     function setParams($params = null);
+
+    /**
+     * Основной метод обработки данных из форм, в зависимости от action
+     * Неявно получает массив данных после вызова метода setParams
+     * @return mixed
+     */
     function doFormHandle();
 }

@@ -36,7 +36,7 @@
             <?php endif?>
             <div class="form-group col-sm-4">
                 <label for="user_queries">Запросы пользователя</label>
-                <select id="user_queries" name="user_queries" class="form-control custom-select" size="6">
+                <select id="user_queries" name="query_id" class="form-control custom-select" size="6">
                 </select>
             </div>
 

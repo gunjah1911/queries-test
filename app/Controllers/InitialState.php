@@ -7,9 +7,20 @@ use App\Views\InitialFormView;
 
 class InitialState implements IFormHandleStrategy
 {
+    protected $params;
+
+    /**
+     * Обрабортка параметров из формы
+     * @param null $params
+     * @return mixed|null
+     */
+    //TODO: Сделать проверку сущесвтвования нужных параметров
+    function setParams($params = null)
+    {
+        return $this->params = $params;
+    }
     /**
      * Начальное состояние: отображение формы и получение списка пользователей.
-     * @param array $params
      * В метод должен передаваться ID выбранного пользователя $params['user']
      */
     public function doFormHandle($params = null)

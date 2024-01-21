@@ -13,13 +13,11 @@ class FormHandler {
     /**
      * @var array Массив параметров (обычно для формирования запроса в БД)
      */
-    protected $params;
 
     public function __construct(IFormHandleStrategy $strategy, $params)
     {
         $this->formHandleStrategy = $strategy;
         $this->formHandleStrategy->setParams($params);
-
         $this->formHandleStrategy->doFormHandle();
     }
 }

@@ -6,19 +6,30 @@ use App\DB\UsersQueries;
 
 class SaveQuery implements IFormHandleStrategy
 {
+    protected $params;
+
+    /**
+     * Обрабортка параметров из формы
+     * @param null $params
+     * @return mixed|null
+     */
+    //TODO: Сделать проверку сущесвтвования нужных параметров
+    function setParams($params = null)
+    {
+        return $this->params = $params;
+    }
     /**
      * Обработка GET-параметра action=saveas
-     * @param array $params
      * В метод должен передаваться
      * - ID запроса $params['user']
      * - Наименование запроса
      * - Тело запроса
      */
 
-    function doFormHandle($params = null)
+    function doFormHandle()
     {
         $model = new UsersQueries();
-        if ($model->saveQuery($params['query_id'], $params['query_name'], $params['query'])){
+        if ($model->saveQuery($this->params['query_id'], $this->params['query_name'], $this->params['query'])){
             echo 'Запрос сохранен';
         }
     }
